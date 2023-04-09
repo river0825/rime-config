@@ -1,0 +1,40 @@
+# 2020-0709
+# 預設按下【`】時，就直接使用倉頡（反查）了！
+#
+# 外掛倉頡輸入法
+# 📝首次設定、部署時，應在「default.custom.yaml」中，「schema_list:」底下，依照格式加入：「- schema: cangjie5」
+# 📝prefix【\`C】臨時切換倉頡輸入法；【\`】在【Tab】的上面，【數字１】的左邊。
+#
+# ⚠️此檔案參考用，勿直接複製。請編輯你自己的 `double_bopomo.custom.yaml`
+# ⚠️`double_bopomo.custom.yaml`中，只能有一個 `patch:`
+# ⚠️若是部署失敗，在「Rime 使用者資料夾」中，放入倉頡五，再試一次。
+
+patch:
+  schema/dependencies/@next: cangjie5
+  engine/segmentors/@next: affix_segmentor@cangjie
+  engine/translators/@next: table_translator@cangjie
+  recognizer/patterns/cangjie: "`C[a-z]*=?$"
+  comment_bopomo/tags: [ cangjie ]
+  # comment_bopomo/tags: [ cangjie, pinyin ] # 整個檔案設定一次就好
+  cangjie:
+    tag: cangjie
+    dictionary: cangjie5
+    prefix: "`C"
+    tips: "【倉頡模式】"
+    suffix: "="
+    closing_tips: "【雙碼注音】"
+    max_phrase_length: 1                  # 最大自動成詞詞長〔僅table_translator有效〕
+    disable_user_dict_for_patterns: false # 禁止某些編碼錄入用戶詞典
+    enable_sentence:  false               # 是否開啓自動造句
+    enable_user_dict: false               # 是否開啓用戶詞典〔用戶詞典記錄動態字詞頻、用戶詞〕
+    enable_charset_filter: true           # 是否開啓字符集過濾〔僅table_translator有效。啓用cjk_minifier後可適用於script_translator〕
+    enable_encoder: false                 # 是否開啓自動造詞〔僅table_translator有效〕
+    encode_commit_history: false          # 是否對已上屛詞自動成詞〔僅table_translator有效〕
+    enable_completion: true               # 提前顯示尚未輸入完整碼的字〔僅table_translator有效〕
+    sentence_over_completion: false       # 在無全碼對應字而僅有逐鍵提示時也開啓智能組句〔僅table_translator有效〕
+    strict_spelling: false                # 配合speller中的fuzz規則，僅以畧拼碼組詞〔僅table_translator有效〕
+    preedit_format:
+      - xlit|abcdefghijklmnopqrstuvwxyz|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符|
+      - xform|$|【倉】|
+    comment_format:  # 目前在提示下一碼時作用
+      - xlit|abcdefghijklmnopqrstuvwxyz|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符|
